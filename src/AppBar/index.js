@@ -1,9 +1,12 @@
 import React from 'react';
 import { YearContext } from '../context';
-import { Button, Toolbar, Typography, Checkbox } from '@mui/material';
+import { Button, Toolbar, Checkbox } from '@mui/material';
 import { ArrowRight, ArrowLeft } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import HomeIcon from '@mui/icons-material/Home';
+import IconButton from '@mui/material/IconButton';
+import { Link } from 'react-router-dom';
 
 const Component = () => {
   const theme = useTheme();
@@ -21,11 +24,11 @@ const Component = () => {
 
   return (
     <Toolbar sx={{ color: "white", justifyContent }}>
-      {matches && <Typography
-        variant="h5"
-      >
-        Απολογισμός επιτραπεζίων παιχνιδιών <span>{yearFlag ? year : ""}</span>
-      </Typography>}
+      <Link to="/">
+        <IconButton sx={{ color: "white" }}>
+          <HomeIcon />
+        </IconButton>
+      </Link>
       <div>
         <Button
           color="inherit"
