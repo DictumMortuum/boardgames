@@ -25,6 +25,7 @@ const state = {
   mechanics: [],
   played: [],
   network: [],
+  network_length: 0,
   categories: [],
   designers: [],
   subdomains: [],
@@ -84,6 +85,7 @@ const Component = props => {
       subdomains,
       mechanics,
       network,
+      network_length,
       games,
       matches,
       categories,
@@ -137,7 +139,7 @@ const Component = props => {
             count: average.toFixed(2),
           }, {
             name: "Network",
-            count: network.length,
+            count: network_length,
           }]}
           justifyContent="space-evenly"
         />
