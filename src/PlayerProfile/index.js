@@ -32,6 +32,8 @@ const state = {
   locations: [],
   weight: 0,
   average: 0,
+  cooperative: 0,
+  cooperative_per: 0,
   plays_won: 0,
 }
 
@@ -94,6 +96,8 @@ const Component = props => {
       played,
       weight,
       average,
+      cooperative,
+      cooperative_per,
       plays_won,
     },
     isLoaded
@@ -124,6 +128,9 @@ const Component = props => {
           }, {
             name: "Wins",
             count: plays_won,
+          }, {
+            name: "Coop Success",
+            count: `${cooperative == 0 ? "N/A" : (cooperative_per * 100).toFixed(2) + "%"}`
           }]}
           justifyContent="space-evenly"
         />
