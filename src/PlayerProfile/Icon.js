@@ -285,7 +285,7 @@ const Switch = ({ name, style }) => {
   return <Icon style={style} />
 }
 
-const Component = ({ url, name, onMouseEnter, onMouseLeave, ...rest }) => {
+const Component = ({ url, name, variant = "circle", onMouseEnter, onMouseLeave, ...rest }) => {
   const { sx, size = 180 } = rest;
 
   return (
@@ -293,6 +293,7 @@ const Component = ({ url, name, onMouseEnter, onMouseLeave, ...rest }) => {
       src={url}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      variant={variant}
       sx={{
         width: size,
         height: size,

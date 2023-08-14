@@ -2,6 +2,7 @@ import * as React from 'react';
 import Icon from './Icon';
 import Grid from '@mui/material/Grid';
 import ImageCard from './ImageCard';
+import PlayList from './PlayList';
 import Stats from './Stats';
 import Typography from '@mui/material/Typography';
 import Request from '../util/Request';
@@ -11,13 +12,12 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import LinearProgress from '@mui/material/LinearProgress';
 import ElevatedPaper from '../util/ElevatedPaper';
-import { YearContext } from '../context';
+import { YearContext, PlayerContext } from '../context';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const state = {
   games: 0,
-  matches: 0,
   player: {
     name: "",
     avatar: "",
@@ -30,11 +30,13 @@ const state = {
   designers: [],
   subdomains: [],
   locations: [],
+  latest: [],
   weight: 0,
   average: 0,
   cooperative: 0,
   cooperative_per: 0,
-  plays_won: 0,
+  per: 0,
+  plays_count: 0,
 }
 
 const PlayerImage = ({ avatar, name, surname })=> {
@@ -89,7 +91,6 @@ const Component = props => {
       network,
       network_length,
       games,
-      matches,
       categories,
       locations,
       designers,
@@ -98,12 +99,15 @@ const Component = props => {
       average,
       cooperative,
       cooperative_per,
-      plays_won,
+      per,
+      plays_count,
+      latest,
     },
-    isLoaded
+    isLoaded,
+    player_id
   } = props;
 
-  const [value, setValue] = React.useState('0');
+  const [value, setValue] = React.useState('-1');
   const theme = useTheme();
   const flag = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -112,96 +116,105 @@ const Component = props => {
   };
 
   return (
-    <Grid container component={ElevatedPaper} mt={20} p={2}>
-      <Grid item xs={12}>
-        <PlayerImage avatar={avatar} name={name} surname={surname} />
-      </Grid>
-      {!flag && <Grid item xs={12} sm={0} p={5} />}
-      <Grid item xs={12} sm={4} sx={{ textAlign: "center" }} p={4}>
-        <Stats
-          stats={[{
-            name: "Games",
-            count: games,
-          }, {
-            name: "Matches",
-            count: matches,
-          }, {
-            name: "Wins",
-            count: plays_won,
-          }, {
-            name: "Coop Success",
-            count: `${cooperative == 0 ? "N/A" : (cooperative_per * 100).toFixed(2) + "%"}`
-          }]}
-          justifyContent="space-evenly"
-        />
-      </Grid>
-      <Grid item xs={0} sm={4} />
-      <Grid item xs={12} sm={4} sx={{ textAlign: "center" }} p={4}>
-        <Stats
-          stats={[{
-            name: "Weight",
-            count: weight.toFixed(2),
-          }, {
-            name: "Average",
-            count: average.toFixed(2),
-          }, {
-            name: "Network",
-            count: network_length,
-          }]}
-          justifyContent="space-evenly"
-        />
-      </Grid>
-      <Grid item xs={12} mt={2}>
-        <Typography variant="h4" align="center">
-          {name} {surname}
-        </Typography>
-      </Grid>
-      <Grid item xs={12} p={4}>
-        <Box>
-          <Box sx={{ height: 5 }}>
-            {!isLoaded && <LinearProgress />}
+    <PlayerContext.Provider value={{...props}}>
+      <Grid container component={ElevatedPaper} mt={20} p={2}>
+        <Grid item xs={12}>
+          <PlayerImage avatar={avatar} name={name} surname={surname} />
+        </Grid>
+        {!flag && <Grid item xs={12} sm={0} p={5} />}
+        <Grid item xs={12} sm={4} sx={{ textAlign: "center" }} p={4}>
+          <Stats
+            stats={[{
+              name: "Plays",
+              count: plays_count,
+            }, {
+              name: "Coop Plays",
+              count: cooperative,
+            }, {
+              name: "Wins",
+              count: `${plays_count === 0 ? "N/A" : (per * 100).toFixed(2) + "%"}`
+            }, {
+              name: "Coop Wins",
+              count: `${cooperative === 0 ? "N/A" : (cooperative_per * 100).toFixed(2) + "%"}`
+            }]}
+            justifyContent="space-evenly"
+          />
+        </Grid>
+        <Grid item xs={0} sm={4} />
+        <Grid item xs={12} sm={4} sx={{ textAlign: "center" }} p={4}>
+          <Stats
+            stats={[{
+              name: "Games",
+              count: games,
+            }, {
+              name: "Weight",
+              count: weight.toFixed(2),
+            }, {
+              name: "Average",
+              count: average.toFixed(2),
+            }, {
+              name: "Network",
+              count: network_length,
+            }]}
+            justifyContent="space-evenly"
+          />
+        </Grid>
+        <Grid item xs={12} mt={2}>
+          <Typography variant="h4" align="center">
+            {name} {surname}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} p={4}>
+          <Box>
+            <Box sx={{ height: 5 }}>
+              {!isLoaded && <LinearProgress />}
+            </Box>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="lab API tabs example"
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+            >
+              <Tab label="Latest" value="-1" />
+              <Tab label="Games" value="0" />
+              <Tab label="Subdomains" value="1" />
+              <Tab label="Mechanics" value="2" />
+              <Tab label="Categories" value="3" />
+              <Tab label="Network" value="4" />
+              <Tab label="Locations" value="5" />
+              <Tab label="Designers" value="6" />
+            </Tabs>
           </Box>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="lab API tabs example"
-            variant="scrollable"
-            scrollButtons
-            allowScrollButtonsMobile
-          >
-            <Tab label="Played" value="0" />
-            <Tab label="Subdomains" value="1" />
-            <Tab label="Mechanics" value="2" />
-            <Tab label="Categories" value="3" />
-            <Tab label="Network" value="4" />
-            <Tab label="Locations" value="5" />
-            <Tab label="Designers" value="6" />
-          </Tabs>
-        </Box>
 
-        <TabPanel value={value} index="0">
-          <ImageCard name="Played" data={played} />
-        </TabPanel>
-        <TabPanel value={value} index="1">
-          <ImageCard name="Subdomains" data={subdomains} />
-        </TabPanel>
-        <TabPanel value={value} index="2">
-          <ImageCard name="Mechanics" data={mechanics} />
-        </TabPanel>
-        <TabPanel value={value} index="3">
-          <ImageCard name="Categories" data={categories} />
-        </TabPanel>
-        <TabPanel value={value} index="4">
-          <ImageCard name="Network" resource="player" data={network} />
-        </TabPanel>
-        <TabPanel value={value} index="5">
-          <ImageCard name="Locations" data={locations} />
-        </TabPanel>
-        <TabPanel value={value} index="6">
-          <ImageCard name="Designers" data={designers} />
-        </TabPanel>
+          <TabPanel value={value} index="-1">
+            <PlayList name="Latest" data={latest} player_id={player_id} />
+          </TabPanel>
+          <TabPanel value={value} index="0">
+            <ImageCard name="Played" data={played} />
+          </TabPanel>
+          <TabPanel value={value} index="1">
+            <ImageCard name="Subdomains" data={subdomains} />
+          </TabPanel>
+          <TabPanel value={value} index="2">
+            <ImageCard name="Mechanics" data={mechanics} />
+          </TabPanel>
+          <TabPanel value={value} index="3">
+            <ImageCard name="Categories" data={categories} />
+          </TabPanel>
+          <TabPanel value={value} index="4">
+            <ImageCard name="Network" resource="player" data={network} />
+          </TabPanel>
+          <TabPanel value={value} index="5">
+            <ImageCard name="Locations" data={locations} />
+          </TabPanel>
+          <TabPanel value={value} index="6">
+            <ImageCard name="Designers" data={designers} />
+          </TabPanel>
+        </Grid>
       </Grid>
-    </Grid>
+    </PlayerContext.Provider>
   );
 }
 
@@ -215,7 +228,7 @@ const Wrapper = () => {
       request={`${process.env.REACT_APP_ENDPOINT}/player/${id}?year=${year}&year_flag=${yearFlag}`}
       initialState={state}
     >
-      <Component />
+      <Component player_id={id} />
     </Request>
   )
 }
