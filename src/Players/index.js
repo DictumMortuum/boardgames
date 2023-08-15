@@ -26,12 +26,13 @@ const Component = props => {
 }
 
 const Wrapper = () => {
-  const { year, yearFlag } = React.useContext(YearContext);
+  const { year, yearFlag, loading, setLoading } = React.useContext(YearContext);
 
   return (
     <Request
       request={`${process.env.REACT_APP_ENDPOINT}/player/all?year=${year}&year_flag=${yearFlag}`}
       initialState={state}
+      setLoading={setLoading}
     >
       <Component />
     </Request>
