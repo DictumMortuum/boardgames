@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react";
 
 const Request = props => {
-  const { request, children, initialState } = props;
+  const { request, children, initialState, setLoading } = props;
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [rs, setRs] = useState(initialState || {});
 
   useEffect(() => {
     setIsLoaded(false);
+    setLoading(true);
     fetch(request)
       .then(res => res.json())
       .then(
         rs => {
           setIsLoaded(true);
+          setLoading(false);
           setRs(rs);
         },
         err => {
           setIsLoaded(true);
+          setLoading(false);
           setError(err);
         }
       )
-  }, [request]);
+  }, [request, setLoading]);
 
   return (
     <React.Fragment>

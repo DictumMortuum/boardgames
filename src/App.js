@@ -10,10 +10,11 @@ function App() {
   const d = new Date();
   const [year, setYear] = React.useState(d.getFullYear());
   const [yearFlag, setYearFlag] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   return (
     <div className="App">
-      <YearContext.Provider value={{ year, setYear, yearFlag, setYearFlag }}>
+      <YearContext.Provider value={{ year, setYear, yearFlag, setYearFlag, loading, setLoading }}>
         <AppBar />
         <Container sx={{ height: "100vh" }} maxWidth="xl">
           <Routes>

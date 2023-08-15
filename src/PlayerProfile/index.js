@@ -37,6 +37,7 @@ const state = {
   cooperative_per: 0,
   per: 0,
   plays_count: 0,
+  player_counts: {},
 }
 
 const PlayerImage = ({ avatar, name, surname })=> {
@@ -102,6 +103,7 @@ const Component = props => {
       per,
       plays_count,
       latest,
+      player_counts,
     },
     isLoaded,
     player_id
@@ -164,6 +166,19 @@ const Component = props => {
             {name} {surname}
           </Typography>
         </Grid>
+        <Grid item xs={12} sm={12} sx={{ textAlign: "center" }} p={4}>
+          <Stats
+            stats={Object.keys(player_counts).filter(d => d !== "2" && d !== "1").map(key => {
+              const { Won, Count } = player_counts[key];
+              const percentage = Count === 0 ? "N/A" : (Won/Count * 100).toFixed(2);
+              return {
+                name: `${key}-player Wins`,
+                count: `${percentage} (${Won}/${Count})`
+              }
+            })}
+            justifyContent="space-evenly"
+          />
+        </Grid>
         <Grid item xs={12} p={4}>
           <Box>
             <Box sx={{ height: 5 }}>
@@ -221,12 +236,13 @@ const Component = props => {
 const Wrapper = () => {
   const params = useParams();
   const { id } = params;
-  const { year, yearFlag } = React.useContext(YearContext);
+  const { year, yearFlag, setLoading } = React.useContext(YearContext);
 
   return (
     <Request
       request={`${process.env.REACT_APP_ENDPOINT}/player/${id}?year=${year}&year_flag=${yearFlag}`}
       initialState={state}
+      setLoading={setLoading}
     >
       <Component player_id={id} />
     </Request>

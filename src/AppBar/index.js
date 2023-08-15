@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 
 const Component = () => {
-  const { year, setYear, yearFlag, setYearFlag } = React.useContext(YearContext);
+  const { year, setYear, yearFlag, setYearFlag, loading } = React.useContext(YearContext);
   const previous_year = year-1;
   const next_year = year+1;
 
@@ -21,7 +21,7 @@ const Component = () => {
       <div>
         <Button
           color="inherit"
-          disabled={!yearFlag}
+          disabled={!yearFlag || loading}
           onClick={() => setYear(previous_year)}
           startIcon={<ArrowLeft />}
         >
@@ -34,7 +34,7 @@ const Component = () => {
         />
         <Button
           color="inherit"
-          disabled={!yearFlag}
+          disabled={!yearFlag || loading}
           onClick={() => setYear(next_year)}
           endIcon={<ArrowRight />}
         >
