@@ -26,7 +26,7 @@ const Component = props => {
 }
 
 const Wrapper = () => {
-  const { year, yearFlag, loading, setLoading } = React.useContext(YearContext);
+  const { year, yearFlag, setLoading } = React.useContext(YearContext);
 
   return (
     <Request
