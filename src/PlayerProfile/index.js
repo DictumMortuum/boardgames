@@ -38,6 +38,7 @@ const state = {
   per: 0,
   plays_count: 0,
   player_counts: {},
+  best_games: [],
 }
 
 const PlayerImage = ({ avatar, name, surname })=> {
@@ -51,7 +52,7 @@ const PlayerImage = ({ avatar, name, surname })=> {
     setIsHover(false);
   };
 
- const style = {
+  const style = {
     position: 'absolute',
     left: '50%',
     transform: isHover ? 'translate(-50%, -70%)' : 'translate(-50%, -55%)',
@@ -102,6 +103,7 @@ const Component = props => {
       cooperative_per,
       per,
       plays_count,
+      best_games,
       latest,
       player_counts,
     },
@@ -170,7 +172,7 @@ const Component = props => {
           <Stats
             stats={Object.keys(player_counts).filter(d => d !== "2" && d !== "1").map(key => {
               const { Won, Count } = player_counts[key];
-              const percentage = Count === 0 ? "N/A" : (Won/Count * 100).toFixed(2);
+              const percentage = Count === 0 ? "N/A" : (Won/Count * 100).toFixed(2) + "%";
               return {
                 name: `${key}-player Wins`,
                 count: `${percentage} (${Won}/${Count})`
@@ -193,6 +195,7 @@ const Component = props => {
               allowScrollButtonsMobile
             >
               <Tab label="Latest" value="-1" />
+              <Tab label="Best Games" value="7" />
               <Tab label="Games" value="0" />
               <Tab label="Subdomains" value="1" />
               <Tab label="Mechanics" value="2" />
@@ -202,9 +205,11 @@ const Component = props => {
               <Tab label="Designers" value="6" />
             </Tabs>
           </Box>
-
           <TabPanel value={value} index="-1">
             <PlayList name="Latest" data={latest} player_id={player_id} />
+          </TabPanel>
+          <TabPanel value={value} index="7">
+            <ImageCard name="Best" data={best_games} />
           </TabPanel>
           <TabPanel value={value} index="0">
             <ImageCard name="Played" data={played} />
