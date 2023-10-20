@@ -1,7 +1,18 @@
 import { defaultTheme } from 'react-admin';
 
-const myTheme = {
+const theme = {
   ...defaultTheme,
+  palette: {
+    background: {
+      default: '#fafafb',
+    },
+    primary: {
+      main: '#5e81ac',
+    },
+    secondary: {
+      main: '#3b4252',
+    },
+  },
 };
 
-export default myTheme;
+export default theme;

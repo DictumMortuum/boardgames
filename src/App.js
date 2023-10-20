@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router } from "react-router-dom";
+import { Route, HashRouter as Router } from "react-router-dom";
 // import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 // import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 // import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -9,40 +9,52 @@ import themeProvider from './themeProvider';
 import simpleRestProvider from 'ra-data-simple-rest';
 // import dataProvider from './dataProvider';
 // import Login from './components/Login';
-import { useSelector } from 'react-redux';
-import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
+import {
+  YearProvider,
+  PlayerProvider,
+  PlayersProvider,
+} from './context';
+import {
+  Admin,
+  Resource,
+  ListGuesser,
+  EditGuesser,
+  CustomRoutes,
+  Layout
+} from 'react-admin';
 import { PlayList, PlayCreate, PlayEdit } from './resources/plays';
-import { BGStatsPlayerList, BGStatsPlayerEdit } from './resources/bgstats/players';
-import { BGStatsLocationList, BGStatsLocationEdit } from './resources/bgstats/locations';
-import { BGStatsGamesList } from './resources/bgstats/games';
-import { BGStatsPlayList, BGStatsPlayEdit } from './resources/bgstats/plays';
-import { CachedpriceList } from './resources/cachedprices';
-import { IgnoredNameCreate, IgnoredNameEdit, IgnoredNameList } from './resources/ignorednames';
-import { PriceList } from './resources/prices';
-import Dashboard from './components/Dashboard';
+import Dashboard from './pages/Dashboard';
+import Menu from './components/Menu';
+import Players from './pages/Players';
+import Profile from './pages/Profile';
 
 const App = () => {
-  const access_token = useSelector(state => state.user.access_token);
-
   return (
-    <Router>
-      <Admin key={access_token} theme={themeProvider} dataProvider={simpleRestProvider(process.env.REACT_APP_ENDPOINT)} dashboard={Dashboard}>
-        <Resource name="players" list={ListGuesser} edit={EditGuesser} recordRepresentation={(record) => `${record.name} ${record.surname}`} />
-        <Resource name="plays" list={PlayList} edit={PlayEdit} create={PlayCreate} />
-        <Resource name="stats" />
-        <Resource name="locations" />
-        <Resource name="boardgames" list={ListGuesser} edit={EditGuesser} />
-        <Resource name="stores" list={ListGuesser} edit={EditGuesser} />
-        <Resource name="bgstatsplayers" list={BGStatsPlayerList} edit={BGStatsPlayerEdit} />
-        <Resource name="bgstatslocations" list={BGStatsLocationList} edit={BGStatsLocationEdit} />
-        <Resource name="bgstatsgames" list={BGStatsGamesList} />
-        <Resource name="bgstatsplays" list={BGStatsPlayList} edit={BGStatsPlayEdit} />
-        <Resource name="bgstats" />
-        <Resource name="prices" list={PriceList} />
-        <Resource name="cachedprices" list={CachedpriceList} />
-        <Resource name="ignorednames" list={IgnoredNameList} edit={IgnoredNameEdit} create={IgnoredNameCreate} />
-      </Admin>
-    </Router>
+      <Router>
+        <YearProvider>
+          <PlayersProvider>
+            <PlayerProvider>
+              <Admin
+                theme={themeProvider}
+                layout={props => <Layout {...props} menu={Menu} />}
+                dataProvider={simpleRestProvider(process.env.REACT_APP_ENDPOINT)}
+                dashboard={Players}
+              >
+                <Resource name="players" list={ListGuesser} edit={EditGuesser} recordRepresentation={(record) => `${record.name} ${record.surname}`} />
+                <Resource name="plays" list={PlayList} edit={PlayEdit} create={PlayCreate} />
+                <Resource name="stats" />
+                <Resource name="locations" />
+                <Resource name="boardgames" />
+                <CustomRoutes>
+                  <Route path="/playerlist" element={<Players />} />
+                  <Route path="/settings" element={<Dashboard />} />
+                  <Route path="/player/:id" element={<Profile />} />
+                </CustomRoutes>
+              </Admin>
+            </PlayerProvider>
+          </PlayersProvider>
+        </YearProvider>
+      </Router>
   );
 }
 
