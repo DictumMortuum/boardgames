@@ -11,8 +11,6 @@ import simpleRestProvider from 'ra-data-simple-rest';
 // import Login from './components/Login';
 import {
   YearProvider,
-  PlayerProvider,
-  PlayersProvider,
 } from './context';
 import {
   Admin,
@@ -26,33 +24,33 @@ import { PlayList, PlayCreate, PlayEdit } from './resources/plays';
 import Dashboard from './pages/Dashboard';
 import Menu from './components/Menu';
 import Players from './pages/Players';
-import Profile from './pages/Profile';
+import PlayerProfile from './pages/PlayerProfile';
+import Boardgames from './pages/Boardgames';
+import BoardgameProfile from './pages/BoardgameProfile';
 
 const App = () => {
   return (
       <Router>
         <YearProvider>
-          <PlayersProvider>
-            <PlayerProvider>
-              <Admin
-                theme={themeProvider}
-                layout={props => <Layout {...props} menu={Menu} />}
-                dataProvider={simpleRestProvider(process.env.REACT_APP_ENDPOINT)}
-                dashboard={Players}
-              >
-                <Resource name="players" list={ListGuesser} edit={EditGuesser} recordRepresentation={(record) => `${record.name} ${record.surname}`} />
-                <Resource name="plays" list={PlayList} edit={PlayEdit} create={PlayCreate} />
-                <Resource name="stats" />
-                <Resource name="locations" />
-                <Resource name="boardgames" />
-                <CustomRoutes>
-                  <Route path="/playerlist" element={<Players />} />
-                  <Route path="/settings" element={<Dashboard />} />
-                  <Route path="/player/:id" element={<Profile />} />
-                </CustomRoutes>
-              </Admin>
-            </PlayerProvider>
-          </PlayersProvider>
+          <Admin
+            theme={themeProvider}
+            layout={props => <Layout {...props} menu={Menu} />}
+            dataProvider={simpleRestProvider(process.env.REACT_APP_ENDPOINT)}
+            dashboard={Players}
+          >
+            <Resource name="players" list={ListGuesser} edit={EditGuesser} recordRepresentation={(record) => `${record.name} ${record.surname}`} />
+            <Resource name="plays" list={PlayList} edit={PlayEdit} create={PlayCreate} />
+            <Resource name="stats" />
+            <Resource name="locations" />
+            <Resource name="boardgames" />
+            <CustomRoutes>
+              <Route path="/playerlist" element={<Players />} />
+              <Route path="/settings" element={<Dashboard />} />
+              <Route path="/player/:id" element={<PlayerProfile />} />
+              <Route path="/boardgameslist" element={<Boardgames />} />
+              <Route path="/boardgame/:id" element={<BoardgameProfile />} />
+            </CustomRoutes>
+          </Admin>
         </YearProvider>
       </Router>
   );

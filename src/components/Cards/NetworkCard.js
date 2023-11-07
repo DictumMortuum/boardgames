@@ -1,11 +1,8 @@
 import React from 'react';
 import { PiGraphLight } from 'react-icons/pi';
-import { PlayerContext } from '../../context';
 import GenericCard from './GenericCard';
 
-const Component = ({ color }) => {
-  const { data: { network_length } } = React.useContext(PlayerContext);
-
+const Component = ({ color, data: { network_length } }) => {
   return (
     <GenericCard
       icon={PiGraphLight}

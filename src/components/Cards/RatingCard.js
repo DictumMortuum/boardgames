@@ -1,11 +1,8 @@
 import React from 'react';
 import { BsGraphUpArrow } from 'react-icons/bs';
-import { PlayerContext } from '../../context';
 import GenericCard from './GenericCard';
 
-const Component = ({ color }) => {
-  const { data: { average } } = React.useContext(PlayerContext);
-
+const Component = ({ color, data: { average } }) => {
   return (
     <GenericCard
       icon={BsGraphUpArrow}

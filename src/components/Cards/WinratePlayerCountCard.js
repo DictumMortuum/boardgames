@@ -1,11 +1,8 @@
 import React from 'react';
 import { GiPodiumWinner } from 'react-icons/gi';
-import { PlayerContext } from '../../context';
 import GenericCard from './GenericCard';
 
-const Component = ({ color, id, aggregate = false }) => {
-  const { data: { player_counts } } = React.useContext(PlayerContext);
-
+const Component = ({ color, id, aggregate = false, data: { player_counts } }) => {
   let Won, Count;
   if (player_counts[id] !== undefined) {
     Won = player_counts[id].Won;

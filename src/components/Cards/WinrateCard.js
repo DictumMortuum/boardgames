@@ -1,11 +1,8 @@
 import React from 'react';
 import { GiPodiumWinner } from 'react-icons/gi';
-import { PlayerContext } from '../../context';
 import GenericCard from './GenericCard';
 
-const Component = ({ color }) => {
-  const { data: { plays3_count, plays3_per } } = React.useContext(PlayerContext);
-
+const Component = ({ color, data: { plays3_count, plays3_per } }) => {
   return (
     <GenericCard
       icon={GiPodiumWinner}

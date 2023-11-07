@@ -1,11 +1,8 @@
 import React from 'react';
 import { FaHandshake } from 'react-icons/fa';
-import { PlayerContext } from '../../context';
 import GenericCard from './GenericCard';
 
-const Component = ({ color }) => {
-  const { data: { cooperative_count, cooperative_per } } = React.useContext(PlayerContext);
-
+const Component = ({ color, data: { cooperative_count, cooperative_per } }) => {
   return (
     <GenericCard
       icon={FaHandshake}

@@ -1,11 +1,8 @@
 import React from 'react';
 import { BsFillCollectionFill } from 'react-icons/bs';
-import { PlayerContext } from '../../context';
 import GenericCard from './GenericCard';
 
-const Component = ({ color }) => {
-  const { data: { games } } = React.useContext(PlayerContext);
-
+const Component = ({ color, data: { games } }) => {
   return (
     <GenericCard
       icon={BsFillCollectionFill}

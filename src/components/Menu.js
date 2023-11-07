@@ -8,26 +8,25 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
-import Avatar from '@mui/material/Avatar';
-import { PlayerContext } from '../context';
+// import Avatar from '@mui/material/Avatar';
 
-const UserList = ({ player: { id, name, avatar } }) => {
-  return (
-    <List>
-      <ListItem disablePadding>
-        <ListItemButton component={Link} to={`/player/${id}`}>
-          <ListItemIcon>
-            <Avatar src={avatar} sx={{ width: 24, height: 24 }} />
-          </ListItemIcon>
-          <ListItemText primary={`${name}'s profile`} />
-        </ListItemButton>
-      </ListItem>
-    </List>
-  )
-}
+// const UserList = ({ player: { id, name, avatar } }) => {
+//   return (
+//     <List>
+//       <ListItem disablePadding>
+//         <ListItemButton component={Link} to={`/player/${id}`}>
+//           <ListItemIcon>
+//             <Avatar src={avatar} sx={{ width: 24, height: 24 }} />
+//           </ListItemIcon>
+//           <ListItemText primary={`${name}'s profile`} />
+//         </ListItemButton>
+//       </ListItem>
+//     </List>
+//   )
+// }
 
 const Component = () => {
-  const { data, loading } = React.useContext(PlayerContext);
+  // const { data, loading } = React.useContext(PlayerContext);
 
   return (
     <Menu>
@@ -38,6 +37,14 @@ const Component = () => {
               <InboxIcon />
             </ListItemIcon>
             <ListItemText primary="Player List" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/boardgameslist">
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Boardgames List" />
           </ListItemButton>
         </ListItem>
       </List>
@@ -61,7 +68,7 @@ const Component = () => {
         </ListItem>
       </List>
       <Divider /> */}
-      {!loading && data !== null && <UserList {...data} />}
+      {/* {!loading && data !== null && <UserList {...data} />} */}
     </Menu>
   );
 }

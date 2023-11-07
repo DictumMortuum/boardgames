@@ -2,7 +2,6 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
-import { PlayerContext } from '../context';
 import Container from '../components/Container';
 import Cards from '../components/Cards';
 import Card from '@mui/material/Card';
@@ -13,10 +12,11 @@ import Boardgame from '../components/Lists/Boardgame';
 import ListItem from '../components/Lists/ListItem';
 import SmallListItem from '../components/Lists/SmallListItem';
 import Toolbar from '../components/Toolbar';
+import { useFilter } from '../hooks/useFilter';
+import { usePlayers } from '../hooks/usePlayers';
+import { isReady } from '../resources/util';
 
-const PlayerCard = () => {
-  const { data: { player: { name, surname, avatar } } } = React.useContext(PlayerContext);
-
+const PlayerCard = ({ data: { player: { name, surname, avatar } } }) => {
   return (
     <Card>
       <CardMedia
@@ -32,62 +32,62 @@ const PlayerCard = () => {
   )
 }
 
-const PlayerInfo = () => {
+const PlayerInfo = ({ data }) => {
   return (
     <Grid container spacing={2}>
       <Grid item md={9} xs={12}>
         <Grid container spacing={2} >
           <Grid item md={4} xs={12}>
-            <Cards.CollectionCard />
+            <Cards.CollectionCard data={data} />
           </Grid>
           <Grid item md={4} xs={12}>
-            <Cards.WeightCard />
+            <Cards.WeightCard data={data} />
           </Grid>
           <Grid item md={4} xs={12}>
-            <Cards.RatingCard />
+            <Cards.RatingCard data={data} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item md={3} xs={12}>
         <Grid container spacing={2}>
           <Grid item md={12} xs={12}>
-            <Cards.NetworkCard />
+            <Cards.NetworkCard data={data} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item md={6} xs={12} >
         <Grid container spacing={2}>
           <Grid item md={6} xs={12}>
-            <Cards.PlaysCard />
+            <Cards.PlaysCard data={data} />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Cards.WinrateCard />
+            <Cards.WinrateCard data={data} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item md={6} xs={12}>
         <Grid container spacing={2}>
           <Grid item md={6} xs={12}>
-            <Cards.CoopPlaysCard />
+            <Cards.CoopPlaysCard data={data} />
           </Grid>
           <Grid item md={6} xs={12}>
-            <Cards.CoopWinrateCard />
+            <Cards.CoopWinrateCard data={data} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item md={12} xs={12}>
         <Grid container spacing={2}>
           <Grid item md={3} xs={12}>
-            <Cards.WinratePlayerCountCard id="3" />
+            <Cards.WinratePlayerCountCard id="3" data={data} />
           </Grid>
           <Grid item md={3} xs={12}>
-            <Cards.WinratePlayerCountCard id="4" />
+            <Cards.WinratePlayerCountCard id="4" data={data} />
           </Grid>
           <Grid item md={3} xs={12}>
-            <Cards.WinratePlayerCountCard id="5" />
+            <Cards.WinratePlayerCountCard id="5" data={data} />
           </Grid>
           <Grid item md={3} xs={12}>
-            <Cards.WinratePlayerCountCard id="6" aggregate />
+            <Cards.WinratePlayerCountCard id="6" aggregate data={data} />
           </Grid>
         </Grid>
       </Grid>
@@ -95,9 +95,7 @@ const PlayerInfo = () => {
   )
 }
 
-const LatestGames = () => {
-  const { data: { latest } } = React.useContext(PlayerContext);
-
+const LatestGames = ({ data: { latest, players } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -105,18 +103,16 @@ const LatestGames = () => {
           Latest Games
         </Typography>
       </Grid>
-      {latest.slice(0, 6).map((d, i) =>
+      {useFilter(latest, 6).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
-          <Boardgame {...d} />
+          <Boardgame {...d} roster={players} />
         </Grid>
       )}
     </Grid>
   )
 }
 
-const Highscore = () => {
-  const { data: { scores } } = React.useContext(PlayerContext);
-
+const Highscore = ({ data: { scores } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -124,7 +120,7 @@ const Highscore = () => {
           Highscore
         </Typography>
       </Grid>
-      {scores.slice(0, 6).map((d, i) =>
+      {useFilter(scores, 6).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <ListItem url={d.url} info={d.score} />
         </Grid>
@@ -133,9 +129,7 @@ const Highscore = () => {
   )
 }
 
-const BestGames = () => {
-  const { data: { best_games } } = React.useContext(PlayerContext);
-
+const BestGames = ({ data: { best_games } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -143,7 +137,7 @@ const BestGames = () => {
           Best Games
         </Typography>
       </Grid>
-      {best_games.slice(0, 6).map((d, i) =>
+      {useFilter(best_games, 6).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <ListItem url={d.url} info={d.count} />
         </Grid>
@@ -152,9 +146,7 @@ const BestGames = () => {
   )
 }
 
-const MostPlayed = () => {
-  const { data: { played } } = React.useContext(PlayerContext);
-
+const MostPlayed = ({ data: { played } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -162,7 +154,7 @@ const MostPlayed = () => {
           Most Played
         </Typography>
       </Grid>
-      {played.slice(0, 6).map((d, i) =>
+      {useFilter(played, 6).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <ListItem url={d.url} info={d.count} />
         </Grid>
@@ -171,9 +163,7 @@ const MostPlayed = () => {
   )
 }
 
-const Subdomains = () => {
-  const { data: { subdomains } } = React.useContext(PlayerContext);
-
+const Subdomains = ({ data: { subdomains } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -181,7 +171,7 @@ const Subdomains = () => {
           Subdomains
         </Typography>
       </Grid>
-      {subdomains.slice(0, 12).map((d, i) =>
+      {useFilter(subdomains, 12).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <SmallListItem url={d.url} info={d.count} name={d.name} />
         </Grid>
@@ -190,9 +180,7 @@ const Subdomains = () => {
   )
 }
 
-const Mechanics = () => {
-  const { data: { mechanics } } = React.useContext(PlayerContext);
-
+const Mechanics = ({ data: { mechanics } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -200,7 +188,7 @@ const Mechanics = () => {
           Mechanics
         </Typography>
       </Grid>
-      {mechanics.slice(0, 12).map((d, i) =>
+      {useFilter(mechanics, 12).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <SmallListItem url={d.url} info={d.count} name={d.name} />
         </Grid>
@@ -210,9 +198,7 @@ const Mechanics = () => {
 }
 
 
-const Categories = () => {
-  const { data: { categories } } = React.useContext(PlayerContext);
-
+const Categories = ({ data: { categories } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -220,7 +206,7 @@ const Categories = () => {
           Categories
         </Typography>
       </Grid>
-      {categories.slice(0, 12).map((d, i) =>
+      {useFilter(categories, 12).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <SmallListItem url={d.url} info={d.count} name={d.name} />
         </Grid>
@@ -229,9 +215,7 @@ const Categories = () => {
   )
 }
 
-const Network = () => {
-  const { data: { network, player } } = React.useContext(PlayerContext);
-
+const Network = ({ data: { network, player } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -239,7 +223,7 @@ const Network = () => {
           Network
         </Typography>
       </Grid>
-      {network.filter(d => d.id !== player.id).slice(0, 12).map((d, i) =>
+      {useFilter(network.filter(d => d.id !== player.id), 12).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <SmallListItem url={d.url} info={d.count} name={d.name} />
         </Grid>
@@ -248,9 +232,7 @@ const Network = () => {
   )
 }
 
-const Locations = () => {
-  const { data: { locations } } = React.useContext(PlayerContext);
-
+const Locations = ({ data: { locations } }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -258,7 +240,7 @@ const Locations = () => {
           Locations
         </Typography>
       </Grid>
-      {locations.slice(0, 12).map((d, i) =>
+      {useFilter(locations, 12).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <SmallListItem url={d.url} info={d.count} name={d.name} />
         </Grid>
@@ -267,9 +249,7 @@ const Locations = () => {
   )
 }
 
-const Designers = () => {
-  const { data: { designers } } = React.useContext(PlayerContext);
-
+const Designers = ({ data: { designers } }) => {
   return (
     <Grid container spacing={2} Toolbar={Toolbar}>
       <Grid item xs={12}>
@@ -277,7 +257,7 @@ const Designers = () => {
           Designers
         </Typography>
       </Grid>
-      {designers.slice(0, 12).map((d, i) =>
+      {useFilter(designers, 12).map((d, i) =>
         <Grid key={i} item md={2} xs={12}>
           <SmallListItem url={d.url} info={d.count} name={d.name} />
         </Grid>
@@ -287,54 +267,50 @@ const Designers = () => {
 }
 
 const Component = () => {
-  const { setId, isConsistent } = React.useContext(PlayerContext);
   const { id } = useParams();
-
-  React.useEffect(() => {
-    setId(id);
-  // eslint-disable-next-line
-  }, [id]);
+  const { loading, data } = usePlayers({ id, count: 12 });
+  const ready = isReady([!loading, data !== null]);
 
   return (
     <Container title="Profile" p={0} Toolbar={Toolbar}>
-      {!isConsistent(id) && <LinearProgress />}
-      {isConsistent(id) &&
+      {!ready && <LinearProgress />}
+      {ready &&
         <Grid container>
           <Grid item md={2} xs={12} p={2}>
-            <PlayerCard />
+            <PlayerCard data={data} />
           </Grid>
           <Grid item md={10} xs={12} p={2}>
-            <PlayerInfo />
+            <PlayerInfo data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <LatestGames />
+            <LatestGames data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <BestGames />
+            <BestGames data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <Highscore />
+            <Highscore data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <MostPlayed />
+            <MostPlayed data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <Network />
+            <Network data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <Locations />
+            <Locations data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <Designers />
+            <Designers data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <Subdomains />
+            <Subdomains data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <Mechanics />
+            <Mechanics data={data} />
           </Grid>
           <Grid item md={12} p={2}>
-            <Categories />
+            <Categories data={data} />
           </Grid>
         </Grid>}
     </Container>

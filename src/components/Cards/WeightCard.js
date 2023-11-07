@@ -1,11 +1,8 @@
 import React from 'react';
 import { GiWeight } from 'react-icons/gi';
-import { PlayerContext } from '../../context';
 import GenericCard from './GenericCard';
 
-const Component = ({ color }) => {
-  const { data: { weight } } = React.useContext(PlayerContext);
-
+const Component = ({ color, data: { weight } }) => {
   return (
     <GenericCard
       icon={GiWeight}
