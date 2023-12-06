@@ -6,6 +6,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import { BoardgameLink } from '../links';
 import { Link } from 'react-router-dom';
 
@@ -37,19 +39,41 @@ const Component = ({ id, url, players, date, roster = [] }) => {
 
   return (
     <Card>
-      <CardHeader title={d.toLocaleDateString("el-gr")} />
+      <CardHeader sx={{ textAlign: "center" }} title={d.toLocaleDateString("el-gr")} />
       <BoardgameLink id={id}>
         <CardMedia
           component="img"
           image={url || "https://placehold.co/400/5e81ac/FFF"}
         />
       </BoardgameLink>
-      <CardContent>
+      {roster.length > 0 && <CardContent>
         <AvatarGroup max={10}>
           {players !== undefined && players.map((d, i) => <PlayerAvatar id={d} key={i} roster={roster} />)}
         </AvatarGroup>
-      </CardContent>
+      </CardContent>}
     </Card>
+  );
+}
+
+export const BoardgameList = ({ id, url, name, date }) => {
+  const d = new Date(date);
+
+  return (
+    <TableRow>
+      <TableCell component="th" scope="row">
+        {d.toLocaleDateString("el-gr")}
+      </TableCell>
+      <TableCell align="right">
+        <BoardgameLink id={id}>
+          <CardMedia
+            component="img"
+            sx={{ maxWidth: 100 }}
+            image={url || "https://placehold.co/400/5e81ac/FFF"}
+          />
+        </BoardgameLink>
+      </TableCell>
+      <TableCell>{name}</TableCell>
+    </TableRow>
   );
 }
 

@@ -25,6 +25,8 @@ import Dashboard from './pages/Dashboard';
 import Menu from './components/Menu';
 import Players from './pages/Players';
 import PlayerProfile from './pages/PlayerProfile';
+import PlayerDistinct from './pages/PlayerDistinct';
+import PlayerOld from './pages/PlayerOld';
 import Boardgames from './pages/Boardgames';
 import BoardgameProfile from './pages/BoardgameProfile';
 
@@ -47,6 +49,8 @@ const App = () => {
               <Route path="/playerlist" element={<Players />} />
               <Route path="/settings" element={<Dashboard />} />
               <Route path="/player/:id" element={<PlayerProfile />} />
+              <Route path="/player/:id/distinct" element={<PlayerDistinct />} />
+              <Route path="/player/:id/old" element={<PlayerOld />} />
               <Route path="/boardgameslist" element={<Boardgames />} />
               <Route path="/boardgame/:id" element={<BoardgameProfile />} />
             </CustomRoutes>

@@ -4,33 +4,15 @@ import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
 import Container from '../components/Container';
 import Cards from '../components/Cards';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import LinearProgress from '@mui/material/LinearProgress';
 import Boardgame from '../components/Lists/Boardgame';
 import ListItem from '../components/Lists/ListItem';
 import SmallListItem from '../components/Lists/SmallListItem';
 import Toolbar from '../components/Toolbar';
+import Avatar from '../components/Avatar';
 import { useFilter } from '../hooks/useFilter';
 import { usePlayers } from '../hooks/usePlayers';
 import { isReady } from '../resources/util';
-
-const PlayerCard = ({ data: { player: { name, surname, avatar } } }) => {
-  return (
-    <Card>
-      <CardMedia
-        component="img"
-        image={avatar || "https://placehold.co/400/5e81ac/FFF"}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div" textAlign="center">
-          {name + " " + surname}
-        </Typography>
-      </CardContent>
-    </Card>
-  )
-}
 
 const PlayerInfo = ({ data }) => {
   return (
@@ -277,7 +259,7 @@ const Component = () => {
       {ready &&
         <Grid container>
           <Grid item md={2} xs={12} p={2}>
-            <PlayerCard data={data} />
+            <Avatar data={data} />
           </Grid>
           <Grid item md={10} xs={12} p={2}>
             <PlayerInfo data={data} />
