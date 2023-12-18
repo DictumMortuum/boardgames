@@ -23,3 +23,9 @@ export const fetchDistinct = ({ id, year, yearFlag }) => {
 
   return fetch(url.toString()).then(res => res.json())
 }
+
+export const fetchBoardgameDetails = ({ id }) => {
+  const url = new URL(`${process.env.REACT_APP_ENDPOINT}/boardgames/${id}`)
+
+  return fetch(url.toString()).then(res => res.json())
+}

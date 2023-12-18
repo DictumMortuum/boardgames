@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import { BoardgameLink } from '../links';
 import { Link } from 'react-router-dom';
+import { useBoardgameDetails } from '../../hooks/useBoardgameDetails';
 
 const PlayerAvatar = ({ id, roster, ...rest }) => {
   const player = roster.filter(d => d.id === id);
@@ -73,6 +74,33 @@ export const BoardgameList = ({ id, url, name, date }) => {
         </BoardgameLink>
       </TableCell>
       <TableCell>{name}</TableCell>
+    </TableRow>
+  );
+}
+
+
+export const ReviewBoardgameList = ({ id, category }) => {
+  const { loading, data } = useBoardgameDetails({ id, count: -1 });
+
+  if (loading) {
+    return <></>
+  }
+
+  const { url, name } = data.boardgame;
+
+  return (
+    <TableRow>
+      <TableCell sx={{ width: "20%" }}>
+        <BoardgameLink id={id}>
+          <CardMedia
+            component="img"
+            sx={{ maxWidth: 100 }}
+            image={url || "https://placehold.co/400/5e81ac/FFF"}
+          />
+        </BoardgameLink>
+      </TableCell>
+      <TableCell sx={{ width: "40%" }}>{category}</TableCell>
+      <TableCell sx={{ width: "40%" }}>{name}</TableCell>
     </TableRow>
   );
 }
