@@ -15,9 +15,9 @@ import { Stack, Typography } from '@mui/material';
 //   </ListItem>
 // );
 
-const Component = ({ color = "#5e81ac", icon, primary, secondary }) => (
+const Component = ({ color = "#5e81ac", icon, primary, secondary, show_icon = true }) => (
   <Stack direction="row" sx={{ flexGrow: 1, alignItems: "center" }}>
-    <Avatar icon={icon} color={color} size={64} />
+    {show_icon && <Avatar icon={icon} color={color} size={64} />}
     <Stack>
       <Typography>{primary}</Typography>
       <Typography>{secondary}</Typography>

@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useParams } from 'react-router-dom';
 import Container from '../components/Container';
-// import Cards from '../components/Cards';
+import Cards from '../components/Cards';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -32,68 +32,25 @@ const BoardgameCard = ({ data: { boardgame: { name, url } } }) => {
   )
 }
 
-// const PlayerInfo = () => {
-//   return (
-//     <Grid container spacing={2}>
-//       <Grid item md={9} xs={12}>
-//         <Grid container spacing={2} >
-//           <Grid item md={4} xs={12}>
-//             <Cards.CollectionCard />
-//           </Grid>
-//           <Grid item md={4} xs={12}>
-//             <Cards.WeightCard />
-//           </Grid>
-//           <Grid item md={4} xs={12}>
-//             <Cards.RatingCard />
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//       <Grid item md={3} xs={12}>
-//         <Grid container spacing={2}>
-//           <Grid item md={12} xs={12}>
-//             <Cards.NetworkCard />
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//       <Grid item md={6} xs={12} >
-//         <Grid container spacing={2}>
-//           <Grid item md={6} xs={12}>
-//             <Cards.PlaysCard />
-//           </Grid>
-//           <Grid item md={6} xs={12}>
-//             <Cards.WinrateCard />
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//       <Grid item md={6} xs={12}>
-//         <Grid container spacing={2}>
-//           <Grid item md={6} xs={12}>
-//             <Cards.CoopPlaysCard />
-//           </Grid>
-//           <Grid item md={6} xs={12}>
-//             <Cards.CoopWinrateCard />
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//       <Grid item md={12} xs={12}>
-//         <Grid container spacing={2}>
-//           <Grid item md={3} xs={12}>
-//             <Cards.WinratePlayerCountCard id="3" />
-//           </Grid>
-//           <Grid item md={3} xs={12}>
-//             <Cards.WinratePlayerCountCard id="4" />
-//           </Grid>
-//           <Grid item md={3} xs={12}>
-//             <Cards.WinratePlayerCountCard id="5" />
-//           </Grid>
-//           <Grid item md={3} xs={12}>
-//             <Cards.WinratePlayerCountCard id="6" aggregate />
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//     </Grid>
-//   )
-// }
+const BoardgameInfo = ({ data }) => {
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={12} xs={12}>
+        <Grid container spacing={2}>
+          <Grid item md={3} xs={12}>
+            <Cards.WinningScoreCard data={data} />
+          </Grid>
+          <Grid item md={3} xs={12}>
+            <Cards.ScoreCard data={data} />
+          </Grid>
+          <Grid item md={12} xs={12}>
+            <Cards.MaxScoreCard data={data} />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  )
+}
 
 const LatestGames = ({ data: { latest = [], players } }) => {
   // const  = React.useContext(BoardgameContext);
@@ -175,7 +132,7 @@ const Component = () => {
   const { id } = useParams();
   // const { loading: playersLoading } = React.useContext(PlayersContext);
   const { loading, data } = useBoardgame({ id, count: -1 });
-  const ready = isReady([!loading]);
+  const ready = isReady([!loading, data !== null]);
 
   return (
     <Container title="Boardgame Profile" p={0} Toolbar={Toolbar}>
@@ -186,7 +143,7 @@ const Component = () => {
             <BoardgameCard data={data} />
           </Grid>
           <Grid item md={10} xs={12} p={2}>
-            {/* <PlayerInfo /> */}
+            <BoardgameInfo data={data} />
           </Grid>
           <Grid item md={12} p={2}>
             <LatestGames data={data} />

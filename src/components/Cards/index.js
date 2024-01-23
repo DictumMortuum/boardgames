@@ -7,6 +7,9 @@ import RatingCard from './RatingCard';
 import CollectionCard from './CollectionCard';
 import PlaysCard from './PlaysCard';
 import WinratePlayerCountCard from './WinratePlayerCountCard';
+import WinningScoreCard from './WinningScoreCard';
+import ScoreCard from './ScoreCard';
+import MaxScoreCard from './MaxScoreCard';
 
 // eslint-disable-next-line
 export default {
@@ -19,4 +22,7 @@ export default {
   CollectionCard,
   PlaysCard,
   WinratePlayerCountCard,
+  WinningScoreCard,
+  ScoreCard,
+  MaxScoreCard,
 }
