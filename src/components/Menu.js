@@ -47,6 +47,14 @@ const Component = () => {
             <ListItemText primary="Boardgames List" />
           </ListItemButton>
         </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton component={Link} to="/optionslist">
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Options List" />
+          </ListItemButton>
+        </ListItem>
       </List>
       <Divider />
       {/* <List>

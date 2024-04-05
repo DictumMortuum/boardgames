@@ -30,6 +30,7 @@ import PlayerOld from './pages/PlayerOld';
 import Boardgames from './pages/Boardgames';
 import BoardgameProfile from './pages/BoardgameProfile';
 import Review from './pages/Review';
+import Options from './pages/Options';
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
               <Route path="/player/:id/distinct" element={<PlayerDistinct />} />
               <Route path="/player/:id/old" element={<PlayerOld />} />
               <Route path="/boardgameslist" element={<Boardgames />} />
+              <Route path="/optionslist" element={<Options />} />
               <Route path="/boardgame/:id" element={<BoardgameProfile />} />
               <Route path="/review/:id" element={<Review />} />
             </CustomRoutes>

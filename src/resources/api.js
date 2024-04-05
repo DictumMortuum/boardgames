@@ -29,3 +29,9 @@ export const fetchBoardgameDetails = ({ id }) => {
 
   return fetch(url.toString()).then(res => res.json())
 }
+
+export const fetchOptions = ({ year, yearFlag, num }) => {
+  const url = new URL(`${process.env.REACT_APP_BOARDGAMES_ENDPOINT}/boardgames/options/${num}?year=${year}&year_flag=${yearFlag}`)
+
+  return fetch(url.toString()).then(res => res.json())
+}
